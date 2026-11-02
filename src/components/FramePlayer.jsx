@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { FiPlay, FiPause } from "react-icons/fi";
+import { FiPlay, FiPause, FiMaximize2, FiMinimize2 } from "react-icons/fi";
 
 /**
  * Canvas-based frame sequence player — renders pre-loaded image frames
- * on a <canvas> element like a video. Used for the Hero section interactive portrait.
+ * on a <canvas> element like a video. Supports full-frame uncropped playback,
+ * playback scrubber, fullscreen toggle, and visibility pausing.
  *
  * Props:
  *   frameCount  — total number of frames (default 192)
  *   framePath   — optional function(index) => URL string, 1-indexed
  *   fps         — playback framerate (default 24)
  *   loop        — whether to loop playback (default true)
+ *   objectFit   — 'contain' (default, full-frame uncropped) | 'cover'
  *   className   — extra CSS classes for the wrapper
  *   onLoaded    — callback when all frames are preloaded
  */
@@ -18,6 +20,7 @@ export default function FramePlayer({
   framePath,
   fps = 24,
   loop = true,
+  objectFit = "contain",
   className = "",
   onLoaded,
 }) {
@@ -32,6 +35,8 @@ export default function FramePlayer({
   const [isPlaying, setIsPlaying] = useState(true);
   const [loaded, setLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [currentFrameNum, setCurrentFrameNum] = useState(1);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const getPath = useCallback(
     (i) => {
@@ -90,7 +95,7 @@ export default function FramePlayer({
     };
   }, [frameCount, getPath, onLoaded]);
 
-  // Pause animation when hero is scrolled out of view to conserve battery and CPU
+  // Pause animation when out of viewport
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -105,6 +110,26 @@ export default function FramePlayer({
     observer.observe(container);
     return () => observer.disconnect();
   }, []);
+
+  // Listen to fullscreen changes
+  useEffect(() => {
+    const onFsChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener("fullscreenchange", onFsChange);
+    return () => document.removeEventListener("fullscreenchange", onFsChange);
+  }, []);
+
+  const toggleFullscreen = () => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    if (!document.fullscreenElement) {
+      container.requestFullscreen().catch((err) => console.warn(err));
+    } else {
+      document.exitFullscreen().catch((err) => console.warn(err));
+    }
+  };
 
   // Animate frames on canvas
   useEffect(() => {
@@ -128,10 +153,17 @@ export default function FramePlayer({
 
       if (isVisibleRef.current && elapsed >= frameDuration) {
         lastTimeRef.current = timestamp - (elapsed % frameDuration);
-        const frame = framesRef.current[frameIndexRef.current];
+        const idx = frameIndexRef.current;
+        const frame = framesRef.current[idx];
+
         if (frame && frame.complete && frame.naturalWidth > 0) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+        }
+
+        // Update frame counter for UI
+        if (idx % 3 === 0) {
+          setCurrentFrameNum(idx + 1);
         }
 
         frameIndexRef.current++;
@@ -155,35 +187,69 @@ export default function FramePlayer({
   }, [loaded, isPlaying, fps, loop]);
 
   return (
-    <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
+    <div
+      ref={containerRef}
+      className={`relative overflow-hidden group select-none bg-black ${className}`}
+    >
       {/* Subtle loader pill while remaining frames stream in */}
       {!loaded && (
-        <div className="absolute top-3 right-3 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/80 backdrop-blur-md border border-white/10 text-accent text-xs font-mono">
-          <div className="w-3 h-3 border-2 border-accent/20 border-t-accent rounded-full animate-spin" />
+        <div className="absolute top-3 right-3 z-30 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-cyan-400/30 text-cyan-400 text-xs font-mono">
+          <div className="w-3 h-3 border-2 border-cyan-400/20 border-t-cyan-400 rounded-full animate-spin" />
           <span>{progress}%</span>
         </div>
       )}
 
-      {/* Canvas */}
+      {/* Canvas — full-frame uncropped rendering */}
       <canvas
         ref={canvasRef}
-        className="w-full h-full object-cover"
+        className={`w-full h-full ${
+          objectFit === "contain" ? "object-contain" : "object-cover"
+        }`}
         style={{ display: "block" }}
       />
 
-      {/* Play/Pause Button on Hover */}
-      {loaded && (
+      {/* Top badges: Full-Frame format indicator & frame count */}
+      <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity">
+        <span className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider uppercase font-semibold bg-black/75 backdrop-blur-md border border-cyan-400/30 text-cyan-300">
+          FULL-FRAME 16:9
+        </span>
+        <span className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider uppercase font-semibold bg-black/75 backdrop-blur-md border border-white/10 text-slate-300">
+          FRAME {String(currentFrameNum).padStart(3, "0")} / {frameCount}
+        </span>
+      </div>
+
+      {/* Scrub / Progress Bar along bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 z-20 overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-75"
+          style={{ width: `${(currentFrameNum / frameCount) * 100}%` }}
+        />
+      </div>
+
+      {/* Interactive Controls Overlay on Hover */}
+      <div className="absolute bottom-3 right-3 z-30 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
         <button
           onClick={() => setIsPlaying((prev) => !prev)}
           title={isPlaying ? "Pause 24fps motion" : "Play 24fps motion"}
           aria-label={isPlaying ? "Pause animation" : "Play animation"}
-          className="absolute bottom-14 right-3 z-20 p-2.5 rounded-xl bg-background/80 backdrop-blur-md
-                     border border-white/10 text-muted hover:text-accent hover:border-accent/40
-                     opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-xl"
+          className="p-2 rounded-lg bg-black/80 backdrop-blur-md border border-white/10
+                     text-slate-200 hover:text-cyan-400 hover:border-cyan-400/40
+                     transition-all shadow-xl"
         >
           {isPlaying ? <FiPause size={14} /> : <FiPlay size={14} />}
         </button>
-      )}
+
+        <button
+          onClick={toggleFullscreen}
+          title={isFullscreen ? "Exit Fullscreen" : "View Full Frame Fullscreen"}
+          aria-label={isFullscreen ? "Exit Fullscreen" : "View Full Frame Fullscreen"}
+          className="p-2 rounded-lg bg-black/80 backdrop-blur-md border border-white/10
+                     text-slate-200 hover:text-cyan-400 hover:border-cyan-400/40
+                     transition-all shadow-xl"
+        >
+          {isFullscreen ? <FiMinimize2 size={14} /> : <FiMaximize2 size={14} />}
+        </button>
+      </div>
     </div>
   );
 }
