@@ -154,9 +154,9 @@ export default function Hero() {
                       href={siteConfig.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-cyan-400 font-mono tracking-wider transition-colors"
+                      className="hover:text-cyan-400 font-mono tracking-wider transition-colors truncate"
                     >
-                      GITHUB.COM/KAUSTUBHBODKHE
+                      GITHUB.COM/KAUSTUBHBODKHE9011-PNG
                     </a>
                   </div>
                   <div className="flex items-center gap-2.5 text-slate-300">

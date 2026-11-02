@@ -7,14 +7,14 @@ export const siteConfig = {
   title: "BSc CS Student | AI/ML & NLP Enthusiast | Full-Stack Developer",
   location: "Pune, Maharashtra, India",
   email: "kaustubhbodkhe@gmail.com",
-  github: "https://github.com/kaustubhbodkhe",
+  github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
   linkedin: "https://linkedin.com/in/kaustubhbodkhe",
   resumeUrl: "/resume.pdf",
   photoUrl: "/photo.jpg",
   ogImage: "/og-image.png",
 
   // Bio shown in Hero and About sections
-  bio: `I'm a Computer Science student at Dr. D. Y. Patil ACS College (SPPU, Pune) passionate about building intelligent systems that understand and generate human language.
+  bio: `I'm a Computer Science student at ASM CSIT (Affiliated to SPPU, Pune) passionate about building intelligent systems that understand and generate human language.
 
 Currently exploring Natural Language Processing, Large Language Models, and Retrieval-Augmented Generation (RAG) architectures alongside full-stack engineering. My goal is to bridge the gap between cutting-edge AI research and practical, reliable web applications.`,
 
@@ -83,7 +83,7 @@ export const projects = [
     learned:
       "Relational schema design (3NF), pessimistic row locking in ACID transactions, role-based session security, and data visualization.",
     tech: ["Python", "Django", "MySQL", "SQLite3", "Bootstrap 5", "Chart.js"],
-    github: "https://github.com/kaustubhbodkhe/smart-inventory",
+    github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
     liveDemo: "#",
     screenshot: "/projects/smart-inventory.png",
   },
@@ -103,7 +103,7 @@ export const projects = [
     learned:
       "Integrating cutting-edge Generative AI APIs, managing asynchronous background jobs, handling media streams, and resilient error recovery.",
     tech: ["Node.js", "Express", "Replicate API", "JavaScript", "Tailwind CSS"],
-    github: "https://github.com/kaustubhbodkhe/reel-forge",
+    github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
     liveDemo: "#",
     screenshot: "/projects/reel-forge.png",
   },
@@ -123,7 +123,7 @@ export const projects = [
     learned:
       "Curriculum architecture for technical learning, accessible UI design, progressive disclosure patterns, and client-side state management.",
     tech: ["HTML5", "CSS3", "JavaScript", "Python"],
-    github: "https://github.com/kaustubhbodkhe/python-learning",
+    github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
     liveDemo: "#",
     screenshot: "/projects/python-learning.png",
   },
@@ -135,11 +135,11 @@ export const projects = [
 export const education = [
   {
     degree: "Bachelor of Science in Computer Science (B.Sc. CS)",
-    institution: "Dr. D. Y. Patil ACS College (SPPU)",
+    institution: "ASM CSIT (Affiliated to SPPU, Pune)",
     location: "Pune, Maharashtra, India",
     period: "2023 – 2026",
     description:
-      "Focusing on software engineering, data structures, algorithms, relational database systems (RDBMS), and artificial intelligence fundamentals. Developed the Smart Inventory Management System as academic capstone project under NEP CBCS pattern.",
+      "Focusing on software engineering, data structures, algorithms, relational database systems (RDBMS), and artificial intelligence fundamentals. Developed the Smart Inventory Management System as academic capstone project under NEP CBCS pattern at ASM CSIT.",
     current: true,
   },
 ];
