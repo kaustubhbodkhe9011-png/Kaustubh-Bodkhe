@@ -1,270 +1,322 @@
 import { motion } from "framer-motion";
-import {
-  FiGithub,
-  FiMail,
-  FiMapPin,
-  FiChevronDown,
-} from "react-icons/fi";
+import { FiGithub, FiMail, FiMapPin, FiChevronDown, FiDownload } from "react-icons/fi";
 import { siteConfig } from "../data/config";
 
 /**
- * Hero section — Full-bleed cinematic Behance 2026 aesthetic.
- * Photo as background, giant PORTFOLIO / 2026 text overlay,
- * identity block bottom-left, SCROLL TO EXPLORE bottom-center.
+ * Hero — Behance 2026 full-bleed cinematic layout.
+ * Layout (top to bottom):
+ *   [NAVBAR - handled externally, ~64px]
+ *   [WELCOME TO MY label]
+ *   [PORTFOLIO  giant text]
+ *   [2026]
+ *   [spacer flex-1]
+ *   [KAUSTUBH BODKHE  +  roles  +  contacts  +  buttons]
+ *   [SCROLL TO EXPLORE]
  */
 export default function Hero() {
   return (
     <section
       id="home"
-      className="relative w-full min-h-screen overflow-hidden flex items-end"
-      style={{ fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif" }}
+      className="relative w-full overflow-hidden"
+      style={{ minHeight: "100svh", display: "flex", flexDirection: "column" }}
     >
       {/* ── Full-bleed Background Photo ── */}
       <img
         src="/photo.jpg"
         alt="Kaustubh Bodkhe"
-        className="absolute inset-0 w-full h-full object-cover object-center"
-        style={{ objectPosition: "60% center" }}
+        className="absolute inset-0 w-full h-full"
+        style={{ objectFit: "cover", objectPosition: "65% center" }}
         draggable={false}
       />
 
-      {/* ── Dark gradient overlay — heavier at bottom & left ── */}
+      {/* ── Overlay: dark on left & bottom, fade to transparent right ── */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          background:
-            "linear-gradient(to right, rgba(5,8,20,0.88) 0%, rgba(5,8,20,0.55) 50%, rgba(5,8,20,0.18) 100%), " +
-            "linear-gradient(to top, rgba(5,8,20,0.95) 0%, rgba(5,8,20,0.55) 45%, rgba(5,8,20,0.10) 100%)",
+          background: [
+            "linear-gradient(to right, rgba(4,7,18,0.92) 0%, rgba(4,7,18,0.65) 55%, rgba(4,7,18,0.15) 100%)",
+            "linear-gradient(to top,   rgba(4,7,18,0.97) 0%, rgba(4,7,18,0.60) 40%, rgba(4,7,18,0.05) 100%)",
+          ].join(", "),
         }}
       />
 
-      {/* ── Right-edge blue vertical border glow ── */}
+      {/* ── Right-edge neon glow border ── */}
       <div
-        className="absolute right-0 top-0 h-full w-1 pointer-events-none"
+        className="absolute right-0 top-0 h-full pointer-events-none"
         style={{
+          width: "2px",
           background:
-            "linear-gradient(to bottom, transparent, rgba(6,182,212,0.5) 40%, rgba(6,182,212,0.5) 60%, transparent)",
-          boxShadow: "0 0 30px 6px rgba(6,182,212,0.25)",
+            "linear-gradient(to bottom, transparent 5%, rgba(6,182,212,0.55) 35%, rgba(6,182,212,0.55) 65%, transparent 95%)",
+          boxShadow: "0 0 28px 6px rgba(6,182,212,0.22)",
         }}
       />
-
-      {/* ── Top-left: WELCOME TO MY + blue accent line ── */}
-      <motion.div
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.7, delay: 0.1 }}
-        className="absolute top-10 left-8 sm:left-12 lg:left-16 z-20"
-      >
-        <p
-          className="text-white font-semibold tracking-[0.28em] uppercase"
-          style={{ fontSize: "clamp(11px, 1.3vw, 15px)", letterSpacing: "0.28em" }}
-        >
-          WELCOME TO MY
-        </p>
-        <div
-          className="mt-1.5 h-[2px] w-20"
-          style={{
-            background:
-              "linear-gradient(to right, #06b6d4, rgba(6,182,212,0))",
-            boxShadow: "0 0 10px rgba(6,182,212,0.7)",
-          }}
-        />
-      </motion.div>
 
       {/* ── Sparkle decorations ── */}
-      {/* Top-right sparkle */}
-      <div className="absolute top-12 right-16 z-20 pointer-events-none select-none">
-        <SparkleIcon size={22} opacity={0.55} />
-      </div>
-      {/* Mid-right sparkle */}
-      <div className="absolute top-1/2 right-10 z-20 pointer-events-none select-none" style={{ marginTop: "60px" }}>
-        <SparkleIcon size={16} opacity={0.4} />
-      </div>
-      {/* Bottom-right sparkle */}
-      <div className="absolute bottom-28 right-14 z-20 pointer-events-none select-none">
-        <SparkleIcon size={26} opacity={0.6} />
-      </div>
+      <Sparkle style={{ position:"absolute", top:"72px",  right:"52px",  zIndex:20 }} size={20} opacity={0.5} />
+      <Sparkle style={{ position:"absolute", top:"42%",   right:"36px",  zIndex:20 }} size={14} opacity={0.35} />
+      <Sparkle style={{ position:"absolute", bottom:"96px", right:"52px", zIndex:20 }} size={26} opacity={0.6} />
 
-      {/* ── GIANT PORTFOLIO + 2026 Headline — centre-left, vertically centred ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute z-20 left-8 sm:left-12 lg:left-16"
-        style={{ top: "50%", transform: "translateY(-58%)" }}
+      {/* ══════════════════════════════════════════
+          CONTENT — flex column, full height
+      ══════════════════════════════════════════ */}
+      <div
+        className="relative z-10 flex flex-col w-full"
+        style={{ flex: 1, paddingTop: "80px" /* clears fixed navbar */ }}
       >
-        <h1
-          className="font-black text-white leading-none tracking-tight select-none"
-          style={{
-            fontSize: "clamp(64px, 11vw, 160px)",
-            textShadow: "0 4px 40px rgba(0,0,0,0.5)",
-            letterSpacing: "-0.01em",
-          }}
+        {/* ── 1. WELCOME TO MY ── */}
+        <motion.div
+          initial={{ opacity: 0, x: -24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="px-8 sm:px-12 lg:px-16 pt-6"
         >
-          PORTFOLIO
-        </h1>
-        <div className="flex items-center gap-4 mt-1">
           <p
-            className="font-extrabold text-white leading-none select-none"
             style={{
-              fontSize: "clamp(36px, 5.5vw, 80px)",
-              textShadow: "0 2px 20px rgba(0,0,0,0.5)",
+              color: "#e2e8f0",
+              fontWeight: 700,
+              letterSpacing: "0.3em",
+              fontSize: "clamp(10px, 1.1vw, 14px)",
+              textTransform: "uppercase",
             }}
           >
-            2026
+            WELCOME TO MY
           </p>
-          {/* Decorative small horizontal line */}
+          {/* cyan accent underline */}
           <div
-            className="hidden sm:block flex-1 max-w-[120px] h-[2px]"
             style={{
-              background: "linear-gradient(to right, rgba(6,182,212,0.7), transparent)",
-              marginBottom: "4px",
+              marginTop: "6px",
+              height: "2px",
+              width: "80px",
+              background: "linear-gradient(to right, #06b6d4, transparent)",
+              boxShadow: "0 0 10px rgba(6,182,212,0.7)",
             }}
           />
-        </div>
-      </motion.div>
+        </motion.div>
 
-      {/* ── Bottom content: Identity + Contact + SCROLL ── */}
-      <div className="relative z-20 w-full pb-10 sm:pb-12 px-8 sm:px-12 lg:px-16">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 sm:gap-4">
-
-          {/* Bottom-left: Identity block */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.45 }}
+        {/* ── 2. PORTFOLIO + 2026 ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+          className="px-8 sm:px-12 lg:px-16 mt-2"
+        >
+          <h1
+            style={{
+              color: "#ffffff",
+              fontWeight: 900,
+              lineHeight: 1,
+              letterSpacing: "-0.01em",
+              fontSize: "clamp(58px, 10vw, 148px)",
+              textShadow: "0 4px 40px rgba(0,0,0,0.55)",
+              userSelect: "none",
+            }}
           >
-            {/* Name */}
-            <h2
-              className="font-black text-white tracking-wide leading-none"
+            PORTFOLIO
+          </h1>
+
+          {/* 2026 row */}
+          <div style={{ display: "flex", alignItems: "center", gap: "16px", marginTop: "4px" }}>
+            <span
               style={{
-                fontSize: "clamp(26px, 3.8vw, 54px)",
-                textShadow: "0 2px 20px rgba(0,0,0,0.6)",
+                color: "#ffffff",
+                fontWeight: 800,
+                lineHeight: 1,
+                fontSize: "clamp(32px, 5vw, 72px)",
+                textShadow: "0 2px 20px rgba(0,0,0,0.5)",
+                userSelect: "none",
               }}
             >
-              {siteConfig.name.toUpperCase()}
-            </h2>
+              2026
+            </span>
+            <div
+              style={{
+                flex: 1,
+                maxWidth: "100px",
+                height: "2px",
+                background: "linear-gradient(to right, rgba(6,182,212,0.7), transparent)",
+              }}
+            />
+          </div>
+        </motion.div>
 
-            {/* Role titles */}
-            <p
-              className="mt-1 font-semibold tracking-[0.22em] uppercase text-slate-300"
-              style={{ fontSize: "clamp(9px, 1vw, 12px)" }}
-            >
-              BSC COMPUTER SCIENCE
-            </p>
-            <p
-              className="font-medium tracking-[0.16em] uppercase text-slate-400"
-              style={{ fontSize: "clamp(8px, 0.9vw, 11px)", marginTop: "2px" }}
-            >
-              AI/ML &amp; NLP ENTHUSIAST&nbsp;•&nbsp;FULL-STACK DEVELOPER
-            </p>
+        {/* ── 3. Flexible spacer pushes identity block to bottom ── */}
+        <div style={{ flex: 1, minHeight: "24px" }} />
 
-            {/* Contact icons row */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="mt-3 flex flex-col gap-1.5"
-            >
-              <ContactRow
-                icon={<FiMapPin size={11} />}
-                text={siteConfig.location}
-              />
-              <ContactRow
-                icon={<FiMail size={11} />}
-                text={siteConfig.email}
-                href={`mailto:${siteConfig.email}`}
-              />
-              <ContactRow
-                icon={<FiGithub size={11} />}
-                text={"GITHUB.COM/KAUSTUBHBODKHE9011-PNG"}
-                href={siteConfig.github}
-                external
-              />
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.85 }}
-              className="mt-5 flex flex-wrap gap-3"
-            >
-              <a
-                href="#projects"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-lg font-bold text-xs tracking-wider uppercase"
-                style={{
-                  background: "linear-gradient(135deg, #06b6d4, #0284c7)",
-                  color: "#040810",
-                  boxShadow: "0 0 20px rgba(6,182,212,0.4)",
-                  letterSpacing: "0.12em",
-                }}
-              >
-                View Projects
-              </a>
-              <a
-                href={siteConfig.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-lg font-bold text-xs tracking-wider uppercase text-cyan-300"
-                style={{
-                  border: "1px solid rgba(6,182,212,0.45)",
-                  background: "rgba(6,182,212,0.08)",
-                  letterSpacing: "0.12em",
-                  backdropFilter: "blur(8px)",
-                }}
-              >
-                Download Resume
-              </a>
-            </motion.div>
-          </motion.div>
-
-          {/* Bottom-center: SCROLL TO EXPLORE */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-            className="hidden sm:flex flex-col items-center gap-1 self-end pb-2"
-            style={{ minWidth: "140px" }}
+        {/* ── 4. IDENTITY BLOCK (name, roles, contacts, buttons) ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.45 }}
+          className="px-8 sm:px-12 lg:px-16 pb-4"
+        >
+          {/* Name */}
+          <h2
+            style={{
+              color: "#ffffff",
+              fontWeight: 900,
+              letterSpacing: "0.04em",
+              lineHeight: 1.1,
+              fontSize: "clamp(22px, 3.2vw, 48px)",
+              textShadow: "0 2px 24px rgba(0,0,0,0.6)",
+            }}
           >
-            <p
-              className="text-slate-400 font-semibold tracking-[0.25em] uppercase"
-              style={{ fontSize: "9px" }}
-            >
-              SCROLL TO EXPLORE
-            </p>
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              className="flex flex-col items-center -space-y-2"
-            >
-              <FiChevronDown size={16} className="text-cyan-400 opacity-80" />
-              <FiChevronDown size={16} className="text-cyan-400 opacity-50" />
-            </motion.div>
-          </motion.div>
+            {siteConfig.name.toUpperCase()}
+          </h2>
 
-          {/* Spacer right */}
-          <div className="hidden lg:block" style={{ minWidth: "80px" }} />
-        </div>
+          {/* Degree */}
+          <p
+            style={{
+              color: "#94a3b8",
+              fontWeight: 600,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              fontSize: "clamp(9px, 0.85vw, 11px)",
+              marginTop: "4px",
+            }}
+          >
+            BSC COMPUTER SCIENCE
+          </p>
+
+          {/* Role tagline */}
+          <p
+            style={{
+              color: "#64748b",
+              fontWeight: 500,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              fontSize: "clamp(8px, 0.75vw, 10px)",
+              marginTop: "2px",
+            }}
+          >
+            AI/ML &amp; NLP Enthusiast&nbsp;•&nbsp;Full-Stack Developer
+          </p>
+
+          {/* Contact rows */}
+          <div style={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
+            <ContactRow icon={<FiMapPin size={11} />} text={siteConfig.location} />
+            <ContactRow
+              icon={<FiMail size={11} />}
+              text={siteConfig.email}
+              href={`mailto:${siteConfig.email}`}
+            />
+            <ContactRow
+              icon={<FiGithub size={11} />}
+              text="GITHUB.COM/KAUSTUBHBODKHE9011-PNG"
+              href={siteConfig.github}
+              external
+            />
+          </div>
+
+          {/* CTA buttons */}
+          <div style={{ marginTop: "18px", display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            <a
+              href="#projects"
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "7px",
+                padding: "9px 22px",
+                borderRadius: "10px",
+                fontWeight: 700,
+                fontSize: "11px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "#040810",
+                background: "linear-gradient(135deg, #06b6d4, #0284c7)",
+                boxShadow: "0 0 20px rgba(6,182,212,0.38)",
+                textDecoration: "none",
+              }}
+            >
+              View Projects
+            </a>
+            <a
+              href={siteConfig.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "7px",
+                padding: "9px 22px",
+                borderRadius: "10px",
+                fontWeight: 700,
+                fontSize: "11px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "#67e8f9",
+                border: "1px solid rgba(6,182,212,0.4)",
+                background: "rgba(6,182,212,0.07)",
+                backdropFilter: "blur(8px)",
+                textDecoration: "none",
+              }}
+            >
+              <FiDownload size={13} />
+              Download Resume
+            </a>
+          </div>
+        </motion.div>
+
+        {/* ── 5. SCROLL TO EXPLORE ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1 }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            paddingBottom: "20px",
+            paddingTop: "10px",
+            gap: "4px",
+          }}
+        >
+          <span
+            style={{
+              color: "#64748b",
+              fontWeight: 600,
+              letterSpacing: "0.28em",
+              textTransform: "uppercase",
+              fontSize: "9px",
+            }}
+          >
+            SCROLL TO EXPLORE
+          </span>
+          <motion.div
+            animate={{ y: [0, 7, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "-4px" }}
+          >
+            <FiChevronDown size={17} color="#06b6d4" style={{ opacity: 0.85 }} />
+            <FiChevronDown size={17} color="#06b6d4" style={{ opacity: 0.45, marginTop: "-6px" }} />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
 }
 
-/* ── Helper Components ── */
+/* ── Helpers ── */
 
 function ContactRow({ icon, text, href, external }) {
-  const cls =
-    "flex items-center gap-1.5 text-slate-300 font-mono tracking-wider uppercase transition-colors hover:text-cyan-300";
-  const style = { fontSize: "clamp(7px, 0.75vw, 10px)" };
+  const baseStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "7px",
+    color: "#cbd5e1",
+    fontFamily: "monospace",
+    letterSpacing: "0.1em",
+    textTransform: "uppercase",
+    fontSize: "clamp(7px, 0.72vw, 9.5px)",
+    textDecoration: "none",
+  };
 
   const inner = (
     <>
-      <span className="text-cyan-400 shrink-0">{icon}</span>
+      <span style={{ color: "#06b6d4", flexShrink: 0 }}>{icon}</span>
       <span>{text}</span>
     </>
   );
@@ -273,29 +325,23 @@ function ContactRow({ icon, text, href, external }) {
     return (
       <a
         href={href}
-        className={cls}
-        style={style}
+        style={baseStyle}
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {inner}
       </a>
     );
-  return (
-    <span className={cls} style={style}>
-      {inner}
-    </span>
-  );
+  return <span style={baseStyle}>{inner}</span>;
 }
 
-/** 4-pointed sparkle/star SVG icon */
-function SparkleIcon({ size = 20, opacity = 0.6 }) {
+function Sparkle({ size = 20, opacity = 0.6, style = {} }) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 24 24"
       fill="white"
-      style={{ opacity }}
+      style={{ opacity, pointerEvents: "none", userSelect: "none", ...style }}
     >
       <path d="M12 0 L13.5 10.5 L24 12 L13.5 13.5 L12 24 L10.5 13.5 L0 12 L10.5 10.5 Z" />
     </svg>
