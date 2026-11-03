@@ -83,7 +83,7 @@ export const projects = [
     learned:
       "Relational schema design (3NF), pessimistic row locking in ACID transactions, role-based session security, and data visualization.",
     tech: ["Python", "Django", "MySQL", "SQLite3", "Bootstrap 5", "Chart.js"],
-    github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
+    github: "https://github.com/kaustubhbodkhe/smart-inventory",
     liveDemo: "#",
     screenshot: "/projects/smart-inventory.png",
   },
@@ -103,7 +103,7 @@ export const projects = [
     learned:
       "Integrating cutting-edge Generative AI APIs, managing asynchronous background jobs, handling media streams, and resilient error recovery.",
     tech: ["Node.js", "Express", "Replicate API", "JavaScript", "Tailwind CSS"],
-    github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
+    github: "https://github.com/kaustubhbodkhe/reel-forge",
     liveDemo: "#",
     screenshot: "/projects/reel-forge.png",
   },
@@ -123,7 +123,7 @@ export const projects = [
     learned:
       "Curriculum architecture for technical learning, accessible UI design, progressive disclosure patterns, and client-side state management.",
     tech: ["HTML5", "CSS3", "JavaScript", "Python"],
-    github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
+    github: "https://github.com/kaustubhbodkhe/python-learning",
     liveDemo: "#",
     screenshot: "/projects/python-learning.png",
   },
@@ -139,7 +139,7 @@ export const education = [
     location: "Pune, Maharashtra, India",
     period: "2023 – 2026",
     description:
-      "Focusing on software engineering, data structures, algorithms, relational database systems (RDBMS), and artificial intelligence fundamentals. Developed the Smart Inventory Management System as academic capstone project under NEP CBCS pattern at ASM CSIT.",
+      "Focusing on software engineering, data structures, algorithms, relational database systems (RDBMS), and artificial intelligence fundamentals. Developed the Smart Inventory Management System as academic capstone project under NEP CBCS pattern.",
     current: true,
   },
 ];
