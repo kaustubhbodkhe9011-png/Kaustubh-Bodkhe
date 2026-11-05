@@ -67,8 +67,8 @@ export const skills = [
 // ============================================================
 export const projects = [
   {
-    id: "smart-inventory",
-    title: "Smart Inventory Management System (SIMS)",
+    id: "stocksync",
+    title: "StockSync — Smart Inventory Management",
     shortDesc:
       "A database-backed inventory system with autonomous low-stock detection and atomic stock updates for retail shops.",
     problem:
@@ -83,7 +83,7 @@ export const projects = [
     learned:
       "Relational schema design (3NF), pessimistic row locking in ACID transactions, role-based session security, and data visualization.",
     tech: ["Python", "Django", "MySQL", "SQLite3", "Bootstrap 5", "Chart.js"],
-    github: "https://github.com/kaustubhbodkhe/smart-inventory",
+    github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
     liveDemo: "#",
     screenshot: "/projects/smart-inventory.png",
   },
@@ -139,7 +139,7 @@ export const education = [
     location: "Pune, Maharashtra, India",
     period: "2023 – 2026",
     description:
-      "Focusing on software engineering, data structures, algorithms, relational database systems (RDBMS), and artificial intelligence fundamentals. Developed the Smart Inventory Management System as academic capstone project under NEP CBCS pattern.",
+      "Focusing on software engineering, data structures, algorithms, relational database systems (RDBMS), and artificial intelligence fundamentals. Developed StockSync (Smart Inventory Management) as academic capstone project under NEP CBCS pattern.",
     current: true,
   },
 ];
