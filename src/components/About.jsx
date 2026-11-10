@@ -32,6 +32,11 @@ export default function About() {
                   className="w-full h-full object-cover"
                   loading="lazy"
                   onError={(e) => {
+                    if (!e.target.dataset.triedRelative) {
+                      e.target.dataset.triedRelative = "true";
+                      e.target.src = "./photo.jpg";
+                      return;
+                    }
                     e.target.style.display = "none";
                     e.target.parentElement.classList.add(
                       "flex",

@@ -205,13 +205,22 @@ export default function Hero() {
                 {/* Background gradient (shows if image fails) */}
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950" />
 
-                {/* Portrait image */}
+                {/* Portrait image with multi-fallback handling */}
                 <img
                   src={siteConfig.photoUrl}
                   alt="Kaustubh Bodkhe — AI/ML & Full-Stack Developer"
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{ objectPosition: "center top" }}
                   loading="eager"
+                  onError={(e) => {
+                    if (!e.target.dataset.triedRelative) {
+                      e.target.dataset.triedRelative = "true";
+                      e.target.src = "./photo.jpg";
+                    } else if (!e.target.dataset.triedAbsolute) {
+                      e.target.dataset.triedAbsolute = "true";
+                      e.target.src = `${window.location.pathname.replace(/\/$/, "")}/photo.jpg`;
+                    }
+                  }}
                 />
 
                 {/* Subtle bottom gradient — does NOT cover face */}

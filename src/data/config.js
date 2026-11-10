@@ -2,6 +2,13 @@
 // ★ config.js — Portfolio Configuration for Kaustubh Bodkhe ★
 // ============================================================
 
+// Dynamic base URL for assets - works on GitHub Pages subpaths, Vercel, and localhost
+const BASE = (import.meta.env.BASE_URL || "./").replace(/\/+$/, "");
+const getAsset = (file) => {
+  const clean = file.replace(/^\/+/, "");
+  return BASE ? `${BASE}/${clean}` : `./${clean}`;
+};
+
 export const siteConfig = {
   name: "Kaustubh Bodkhe",
   title: "BSc CS Student | AI/ML & NLP Enthusiast | Full-Stack Developer",
@@ -9,9 +16,9 @@ export const siteConfig = {
   email: "kaustubhbodkhe@gmail.com",
   github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
   linkedin: "https://linkedin.com/in/kaustubhbodkhe", // [ADD EXACT LINKEDIN URL]
-  resumeUrl: "/resume.pdf",
-  photoUrl: "/photo.jpg",
-  ogImage: "/og-image.png",
+  resumeUrl: getAsset("resume.pdf"),
+  photoUrl: getAsset("photo.jpg"),
+  ogImage: getAsset("og-image.png"),
 
   // Bio shown in Hero and About sections
   bio: `I'm a Computer Science student at ASM CSIT (Affiliated to SPPU, Pune), passionate about building intelligent systems that understand and generate human language.
@@ -102,7 +109,7 @@ export const projects = [
     tech: ["Python", "Django", "MySQL", "SQLite3", "Bootstrap 5", "Chart.js"],
     github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
     liveDemo: null,
-    screenshot: "/projects/smart-inventory.png",
+    screenshot: getAsset("projects/smart-inventory.png"),
     category: "fullstack",
   },
   {
@@ -125,7 +132,7 @@ export const projects = [
     tech: ["Node.js", "Express", "Replicate API", "JavaScript", "Tailwind CSS"],
     github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
     liveDemo: null,
-    screenshot: "/projects/reel-forge.png",
+    screenshot: getAsset("projects/reel-forge.png"),
     category: "ai",
   },
   {
@@ -148,7 +155,7 @@ export const projects = [
     tech: ["HTML5", "CSS3", "JavaScript", "Python"],
     github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
     liveDemo: null,
-    screenshot: "/projects/python-learning.png",
+    screenshot: getAsset("projects/python-learning.png"),
     category: "frontend",
   },
   {
@@ -174,7 +181,7 @@ export const projects = [
     tech: ["React", "Vite", "Tailwind CSS", "Framer Motion", "Node.js", "Express", "MongoDB"],
     github: "https://github.com/kaustubhbodkhe9011-png/Kaustubh-Bodkhe",
     liveDemo: null,
-    screenshot: "/projects/portfolio.png",
+    screenshot: getAsset("projects/portfolio.png"),
     category: "fullstack",
   },
 ];
